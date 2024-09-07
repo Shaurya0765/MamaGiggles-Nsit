@@ -31,8 +31,53 @@
 
   
 </head>
+<div id="translate-container">
+  <div id="google_translate_element"></div>
+</div>
 
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+          { pageLanguage: 'en' },
+          'google_translate_element'
+      );
+  }
+</script>
+
+<script type="text/javascript" 
+      src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+
+<style>
+  
+
+  #translate-container {
+      display: flex;
+      justify-content: right;
+      align-items: center;
+     
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  #google_translate_element {
+      font-size: 16px;
+      font-weight: bold;
+      color: #f2f2f2;
+  }
+
+  select.goog-te-combo {
+      padding: 5px;
+      border-radius: 10px;
+      border: 1px solid #f2f2f2;
+      background-color: white;
+      color: rgb(167, 21, 167);
+      font-weight: bold;
+  }
+</style>
 <body class="index-page">
+
 
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
