@@ -502,85 +502,169 @@
           <p><span>Login</span> <span class="description-title">
         </div><!-- End Section Title -->
 
-        <div class="container">
-          <div class="row g-0" data-aos="fade-up" data-aos-delay="100">
-            <div class="col-lg-4 reservation-img"></div>
-            <div class="col-lg-8 d-flex align-items-center reservation-form-bg" data-aos="fade-up" data-aos-delay="200">
-              <form action="forms/login.php" method="post" role="form" class="php-email-form">
-                <div class="row gy-4">
-                  <div class="col-lg-12 col-md-12">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" required="">
-                  </div>
-                  <div class="col-lg-12 col-md-12">
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Password"
-                      required="">
-                  </div>
+
+           
+      
+            <div class="container">
+              <div class="login-container">
+                <div class="social-login">
+                    <button class="facebook">LOGIN WITH FACEBOOK</button>
+                    <button class="twitter">LOGIN WITH TWITTER</button>
+                    <button class="linkedin">LOGIN WITH LINKEDIN</button>
+                    <button class="google">LOGIN WITH GOOGLE</button>
                 </div>
-
-                <div class="text-center mt-3">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Login request was sent. Please wait while we process your login.</div>
-                  <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-                  <button type="submit">Login</button>
-
+                <div class="login-form">
+                    
+                    <form>
+                        <input type="email" placeholder="Email" required>
+                        <input type="password" placeholder="Password" required>
+                        <div class="reset-link">
+                            If you forgot your password you can <a href="#">reset it.</a>
+                        </div>
+                        <div class="reset-link">
+                          New User <a href="#">Register Now</a>
+                      </div>
+                        <button type="submit">LOGIN</button>
+                    </form>
                 </div>
-                <script>
-                  function onSignIn(googleUser) {
-                    // Useful data for your client-side scripts:
-                    var profile = googleUser.getBasicProfile();
-                    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-                    console.log('Full Name: ' + profile.getName());
-                    console.log('Given Name: ' + profile.getGivenName());
-                    console.log('Family Name: ' + profile.getFamilyName());
-                    console.log("Image URL: " + profile.getImageUrl());
-                    console.log("Email: " + profile.getEmail());
-
-                    // The ID token you need to pass to your backend:
-                    var id_token = googleUser.getAuthResponse().id_token;
-                    console.log("ID Token: " + id_token);
-
-                    // Save the ID token to localStorage to keep the user logged in
-                    localStorage.setItem('id_token', id_token);
-
-                    // Update the UI
-                    document.querySelector('.sent-message').innerText = "Login successful!";
-                    document.getElementById('sign-out').style.display = 'block';
-                    document.querySelector('.g-signin2').style.display = 'none';
-                  }
-
-                  function signOut() {
-                    var auth2 = gapi.auth2.getAuthInstance();
-                    auth2.signOut().then(function () {
-                      console.log('User signed out.');
-                      document.querySelector('.sent-message').innerText = "You have been signed out.";
-                      document.getElementById('sign-out').style.display = 'none';
-                      document.querySelector('.g-signin2').style.display = 'block';
-                      localStorage.removeItem('id_token');
-                    });
-                  }
-
-                  function onLoad() {
-                    gapi.load('auth2', function () {
-                      gapi.auth2.init().then(function (auth2) {
-                        if (auth2.isSignedIn.get()) {
-                          // User is signed in.
-                          var googleUser = auth2.currentUser.get();
-                          onSignIn(googleUser);
-                        }
-                      });
-                    });
-                  }
-
-                  // Check the login state on page load
-                  window.onload = onLoad;
-                </script>
-              </form>
-            </div><!-- End Login Form -->
-          </div>
-        </div>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
+            </div>
+            <style>.login-container {
+                        
+                      
+                        border-radius: 8px;
+                    
+                        display: flex;
+                        
+                       align-items: center;
+                       margin-left: 200px;
+                    }
+            
+                    .social-login {
+                        margin-right: 30px;
+                    }
+            
+                    .social-login button {
+                        display: block;
+                        width: 250px;
+                        padding: 15px;
+                        margin-bottom: 10px;
+                        border: none;
+                        border-radius: 5px;
+                        color: white;
+                        font-size: 16px;
+                        cursor: pointer;
+                    }
+            
+                    .social-login .facebook {
+                        background-color: #3b5998;
+                    }
+            
+                    .social-login .twitter {
+                        background-color: #1da1f2;
+                    }
+            
+                    .social-login .linkedin {
+                        background-color: #0077b5;
+                    }
+            
+                    .social-login .google {
+                        background-color: #db4437;
+                    }
+            
+                    .login-form {
+                        border-left: 1px solid #ddd;
+                        padding-left: 30px;
+                    }
+            
+                    .login-form h2 {
+                        margin-bottom: 20px;
+                    }
+            
+                    .login-form input[type="email"],
+                    .login-form input[type="password"] {
+                        width: 200px;
+                        
+                        margin-bottom: 20px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        font-size: 16px;
+                    }
+            
+                    .login-form .reset-link {
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                    }
+            
+                    .login-form .reset-link a {
+                        color: #1565c0;
+                        text-decoration: none;
+                    }
+            
+                    .login-form button {
+                        width: 100%;
+                        padding: 15px;
+                        background-color: #1565c0;
+                        border: none;
+                        border-radius: 5px;
+                        color: white;
+                        font-size: 16px;
+                        cursor: pointer;
+                    }
+            
+                    .login-form button:hover {
+                        background-color: #1565c0;
+                    }
+                    @media (max-width: 1024px) {
+                .login-container {
+                    margin-left: 50px;
+                    margin-right: 50px;
+                }
+            
+                .social-login {
+                    margin-right: 15px;
+                }
+            
+                .login-form {
+                    padding-left: 15px;
+                }
+            
+                .login-form input[type="email"],
+                .login-form input[type="password"] {
+                    width: 100%;
+                }
+            }
+            
+            /* Mobile */
+            @media (max-width: 767px) {
+                .login-container {
+                    margin-left: 20px;
+                    margin-right: 20px;
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+            
+                .social-login {
+                    margin-right: 0;
+                    margin-bottom: 20px;
+                }
+            
+                .login-form {
+                    border-left: none;
+                    padding-left: 0;
+                }
+            
+                .login-form input[type="email"],
+                .login-form input[type="password"] {
+                    width: 100%;
+                }
+            
+                .login-form button {
+                    width: 100%;
+                }
+            }
+                </style>
+            
+            
 
       </section><!-- /Book A Table Section -->
 
