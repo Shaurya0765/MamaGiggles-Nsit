@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personalized Pregnancy Exercise Routine</title>
+<style>
+    :root {
+        --primary-color: #f50704;
+        --secondary-color: #0056b3;
+        --background-color: #f8f9fa;
+        --text-color: #333;
+        --card-background: #ffffff;
+    }
+    body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.3s ease;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .logo-space {
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        animation: fadeIn 1s ease-out, float 6s ease-in-out infinite;
+    }
+    .logo-space img {
+        max-height: 100%;
+    }
+    h1, h2, h3 {
+        color: var(--primary-color);
+        animation: slideInFromLeft 0.5s ease-out;
+    }
+    form, #routineResult {
+        background-color: var(--card-background);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        animation: fadeIn 0.5s ease-out;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    form:hover, #routineResult:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    input:focus, select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(245, 7, 4, 0.2);
+    }
+    button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        margin-top: 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+    button:hover {
+        background-color: #d50000;
+        transform: scale(1.05);
+    }
+    button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+    .exercise {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .exercise:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+    .safety {
+        background-color: #ffe6e6;
+        border: 1px solid var(--primary-color);
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 8px;
+        animation: pulse 2s infinite;
+    }
+    #loadingIndicator {
+        display: none;
+        text-align: center;
+        margin-top: 20px;
+    }
+    .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid var(--primary-color);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 15px;
+        border-radius: 5px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity .2s;
+    }
+    .slider:hover {
+        opacity: 1;
+    }
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        cursor: pointer;
+        transition: transform 0.1s ease;
+    }
+    .slider::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+    }
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        cursor: pointer;
+        transition: transform 0.1s ease;
+    }
+    .slider::-moz-range-thumb:hover {
+        transform: scale(1.1);
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes slideInFromLeft {
+        from { transform: translateX(-20px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        max-width: 100%;
+        margin-top: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .video-container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+    }
+    .height-input {
+        display: flex;
+        gap: 10px;
+    }
+    .height-input input {
+        width: calc(50% - 5px);
+    }
+    .exercise-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    .exercise-tag {
+        background-color: #e0e0e0;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .exercise-tag:hover {
+        background-color: #d0d0d0;
+        transform: scale(1.05);
+    }
+    .exercise-tag.selected {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    #bmiIndicator {
+        margin-top: 10px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+    .error-message {
+        color: var(--primary-color);
+        font-weight: bold;
+        margin-top: 10px;
+        animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="logo-space">
+        <img src="https://via.placeholder.com/200x100?text=AI+Pregnancy+Fitness" alt="AI Pregnancy Fitness Logo">
+    </div>
+    <h1>AI-Powered Pregnancy Exercise Routine</h1>
+    <form id="pregnancyForm">
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="age">Your Age:</label>
+        <input type="number" id="age" min="18" max="50" required>
+
+        <label for="height">Your Height:</label>
+        <div class="height-input">
+            <input type="number" id="heightFeet" min="4" max="7" placeholder="Feet" required>
+            <input type="number" id="heightInches" min="0" max="11" placeholder="Inches" required>
+        </div>
+
+        <label for="weight">Your Current Weight (lbs):</label>
+        <input type="number" id="weight" min="80" max="400" required>
+
+        <div id="bmiIndicator"></div>
+
+        <label for="weeksPregnant">Weeks Pregnant:</label>
+        <input type="number" id="weeksPregnant" min="1" max="42" required>
+
+        <label for="prePregnancyFitness">Pre-Pregnancy Fitness Level:</label>
+        <select id="prePregnancyFitness" required>
+            <option value="">Select Fitness Level</option>
+            <option value="sedentary">Sedentary</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+        </select>
+
+        <label for="currentEnergy">Current Energy Level (1-10):</label>
+        <input type="range" id="currentEnergy" min="1" max="10" value="5" class="slider">
+        <output for="currentEnergy" id="energyOutput">5</output>
+
+        <label>Fitness Goals (Select multiple):</label>
+        <div class="exercise-list" id="goals">
+            <span class="exercise-tag" data-value="maintain">Maintain fitness</span>
+            <span class="exercise-tag" data-value="improve">Improve cardiovascular health</span>
+            <span class="exercise-tag" data-value="strength">Build strength</span>
+            <span class="exercise-tag" data-value="flexibility">Increase flexibility</span>
+            <span class="exercise-tag" data-value="prepare">Prepare for labor</span>
+        </div>
+
+        <label for="restrictions">Physical Restrictions:</label>
+        <input type="text" id="restrictions" placeholder="e.g., back pain, pelvic pain">
+
+        <label for="medicalConditions">Medical Conditions:</label>
+        <input type="text" id="medicalConditions" placeholder="e.g., gestational diabetes, high blood pressure">
+
+        <button type="submit" id="submitButton">Generate Personalized Routine</button>
+    </form>
+
+    <div id="loadingIndicator">
+        <div class="loader"></div>
+        <p>Our AI is crafting your personalized routine...</p>
+    </div>
+
+    <div id="routineResult"></div>
+</div>
+
+<script>
+    document.getElementById('currentEnergy').addEventListener('input', function(e) {
+        document.getElementById('energyOutput').textContent = e.target.value;
+    });
+
+    document.getElementById('goals').addEventListener('click', function(e) {
+        if (e.target.classList.contains('exercise-tag')) {
+            e.target.classList.toggle('selected');
+        }
+    });
+
+    function updateBMI() {
+        const heightFeet = document.getElementById('heightFeet').value;
+        const heightInches = document.getElementById('heightInches').value;
+        const weight = document.getElementById('weight').value;
+
+        if (heightFeet && heightInches && weight) {
+            const heightInchesTotal = (parseInt(heightFeet) * 12) + parseInt(heightInches);
+            const bmi = (703 * weight) / (heightInchesTotal * heightInchesTotal);
+            const bmiIndicator = document.getElementById('bmiIndicator');
+            bmiIndicator.textContent = `Your BMI: ${bmi.toFixed(1)}`;
+
+            if (bmi < 18.5) {
+                bmiIndicator.style.color = 'blue';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                bmiIndicator.style.color = 'green';
+            } else if (bmi >= 25 && bmi < 30) {
+                bmiIndicator.style.color = 'orange';
+            } else {
+                bmiIndicator.style.color = 'red';
+            }
+        }
+    }
+
+    document.getElementById('heightFeet').addEventListener('input', updateBMI);
+    document.getElementById('heightInches').addEventListener('input', updateBMI);
+    document.getElementById('weight').addEventListener('input', updateBMI);
+
+    document.getElementById('pregnancyForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const submitButton = document.getElementById('submitButton');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const routineResult = document.getElementById('routineResult');
+
+        // Clear previous results and errors
+        routineResult.innerHTML = '';
+        const previousError = document.querySelector('.error-message');
+        if (previousError) previousError.remove();
+
+        // Validate form
+        const goals = Array.from(document.querySelectorAll('#goals .selected')).map(el => el.dataset.value);
+        if (goals.length === 0) {
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            errorMessage.textContent =
+            'Please select at least one fitness goal.';
+            submitButton.insertAdjacentElement('afterend', errorMessage);
+            return;
+        }
+
+        // Disable submit button and show loading indicator
+        submitButton.disabled = true;
+        loadingIndicator.style.display = 'block';
+
+        // Simulate API call
+        setTimeout(() => {
+            try {
+                const name = document.getElementById('name').value;
+                const age = document.getElementById('age').value;
+                const heightFeet = document.getElementById('heightFeet').value;
+                const heightInches = document.getElementById('heightInches').value;
+                const weight = document.getElementById('weight').value;
+                const weeksPregnant = document.getElementById('weeksPregnant').value;
+                const prePregnancyFitness = document.getElementById('prePregnancyFitness').value;
+                const currentEnergy = document.getElementById('currentEnergy').value;
+                const restrictions = document.getElementById('restrictions').value;
+                const medicalConditions = document.getElementById('medicalConditions').value;
+
+                const routine = generatePersonalizedRoutine(name, age, heightFeet, heightInches, weight, weeksPregnant, prePregnancyFitness, currentEnergy, goals, restrictions, medicalConditions);
+                displayRoutine(routine);
+            } catch (error) {
+                console.error('Error generating routine:', error);
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.textContent = 'An error occurred while generating your routine. Please try again.';
+                routineResult.appendChild(errorMessage);
+            } finally {
+                loadingIndicator.style.display = 'none';
+                submitButton.disabled = false;
+            }
+        }, 2000); // Simulating AI processing time
+    });
+
+    function generatePersonalizedRoutine(name, age, heightFeet, heightInches, weight, weeksPregnant, prePregnancyFitness, currentEnergy, goals, restrictions, medicalConditions) {
+        const trimester = weeksPregnant <= 13 ? 1 : weeksPregnant <= 26 ? 2 : 3;
+        const heightInchesTotal = (parseInt(heightFeet) * 12) + parseInt(heightInches);
+        const bmi = calculateBMI(heightInchesTotal, weight);
+        const baseExercises = {
+            cardio: [
+    { name: 'Walking', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Swimming', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/ScMzIvxBSi4" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Stationary cycling', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/7rODyXnVQKQ" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Low-impact aerobics', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/5z6W3jVrJQk" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Prenatal dance workout', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/3V6V4QrJQkQ" frameborder="0" allowfullscreen></iframe>' }
+  ],
+  strength: [
+    { name: 'Prenatal yoga', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/Ew3Xr0Vr6Ow" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Light dumbbell exercises', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/H8ZvyM5hB9k" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Bodyweight exercises', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/izqCXhADP70" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Resistance band workouts', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/1qLY1qHD9xY" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Prenatal Pilates', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/utINxvh-h9Q" frameborder="0" allowfullscreen></iframe>' }
+  ],
+  flexibility: [
+    { name: 'Prenatal stretching', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/0cKnStmV1dI" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Gentle yoga', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/7SkbHdjPYho" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Pelvic floor exercises', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/0VvNvE7Ow1c" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Prenatal barre workout', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/S8sH9E1TW1Y" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Pregnancy ball exercises', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/3V6V4QrJQkQ" frameborder="0" allowfullscreen></iframe>' }
+  ],
+  laborPrep: [
+    { name: 'Squats', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/S8sH9E1TW1Y" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Pelvic tilts', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/utINxvh-h9Q" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Kegel exercises', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/0VvNvE7Ow1c" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Birthing ball exercises', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/Ew3Xr0Vr6Ow" frameborder="0" allowfullscreen></iframe>' },
+    { name: 'Breathing exercises', video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/izqCXhADP70" frameborder="0" allowfullscreen></iframe>' }
+  ]
+        }
+
+        let personalizedRoutine = [];
+
+        // Adjust for trimester
+        if (trimester === 1) {
+            personalizedRoutine.push('Focus on establishing a routine and listening to your body');
+        } else if (trimester === 2) {
+            personalizedRoutine.push('This is often the most comfortable trimester for exercise');
+        } else {
+            personalizedRoutine.push('Modify exercises as needed and focus on preparation for labor');
+        }
+
+        // Adjust for pre-pregnancy fitness and current energy
+        const intensityFactor = Math.min(prePregnancyFitness === 'sedentary' ? 1 : prePregnancyFitness === 'beginner' ? 2 : prePregnancyFitness === 'intermediate' ? 3 : 4, parseInt(currentEnergy)) / 2;
+
+        // Adjust for BMI
+        if (bmi < 18.5) {
+            personalizedRoutine.push('Focus on nutrient-dense foods and gentle strength training');
+        } else if (bmi > 25) {
+            personalizedRoutine.push('Incorporate more low-impact cardio and monitor intensity');
+        }
+
+        // Add exercises based on goals
+        goals.forEach(goal => {
+            switch(goal) {
+                case 'maintain':
+                case 'improve':
+                    personalizedRoutine.push(baseExercises.cardio[Math.floor(Math.random() * baseExercises.cardio.length)]);
+                    break;
+                case 'strength':
+                    personalizedRoutine.push(baseExercises.strength[Math.floor(Math.random() * baseExercises.strength.length)]);
+                    break;
+                case 'flexibility':
+                    personalizedRoutine.push(baseExercises.flexibility[Math.floor(Math.random() * baseExercises.flexibility.length)]);
+                    break;
+                case 'prepare':
+                    personalizedRoutine.push(baseExercises.laborPrep[Math.floor(Math.random() * baseExercises.laborPrep.length)]);
+                    break;
+            }
+        });
+
+        // Adjust for restrictions and medical conditions
+        if (restrictions.toLowerCase().includes('back pain')) {
+            personalizedRoutine = personalizedRoutine.filter(exercise => !exercise.name.toLowerCase().includes('impact'));
+            personalizedRoutine.push(baseExercises.flexibility.find(ex => ex.name === 'Prenatal stretching'));
+        }
+        if (medicalConditions.toLowerCase().includes('diabetes')) {
+            personalizedRoutine.push(baseExercises.cardio.find(ex => ex.name === 'Walking'));
+        }
+        if (medicalConditions.toLowerCase().includes('blood pressure')) {
+            personalizedRoutine = personalizedRoutine.filter(exercise => !exercise.name.toLowerCase().includes('strength'));
+            personalizedRoutine.push(baseExercises.cardio.find(ex => ex.name === 'Swimming'));
+        }
+
+        // Personalize routine
+        personalizedRoutine = personalizedRoutine.map(exercise => {
+            if (typeof exercise === 'string') return exercise;
+            const duration = Math.floor(15 + intensityFactor * 5); // 15-35 minutes
+            const frequency = Math.ceil(intensityFactor); // 1-4 times per week
+            return {
+                ...exercise,
+                duration: duration,
+                frequency: frequency
+            };
+        });
+
+        return {
+            name: name,
+            age: age,
+            height: `${heightFeet}'${heightInches}"`,
+            weight: weight,
+            bmi: bmi,
+            weeksPregnant: weeksPregnant,
+            trimester: trimester,
+            routine: personalizedRoutine
+        };
+    }
+
+    function calculateBMI(heightInches, weightLbs) {
+        return ((703 * weightLbs) / (heightInches * heightInches)).toFixed(1);
+    }
+
+    function displayRoutine(routineData) {
+        const resultDiv = document.getElementById('routineResult');
+        resultDiv.innerHTML = `
+            <h2>Your Personalized Routine, ${routineData.name}!</h2>
+            <p>Age: ${routineData.age} | Height: ${routineData.height} | Weight: ${routineData.weight} lbs | BMI: ${routineData.bmi}</p>
+            <p>Weeks Pregnant: ${routineData.weeksPregnant} (Trimester ${routineData.trimester})</p>
+        `;
+
+        routineData.routine.forEach(exercise => {
+            if (typeof exercise === 'string') {
+                const noteDiv = document.createElement('div');
+                noteDiv.className = 'exercise';
+                noteDiv.innerHTML = `<p><strong>Note:</strong> ${exercise}</p>`;
+                resultDiv.appendChild(noteDiv);
+            } else {
+                const exerciseDiv = document.createElement('div');
+                exerciseDiv.className = 'exercise';
+                exerciseDiv.innerHTML = `
+                    <h3>${exercise.name}</h3>
+                    <p>Duration: ${exercise.duration} minutes, ${exercise.frequency} time(s) per week</p>
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="${exercise.video}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                `;
+                resultDiv.appendChild(exerciseDiv);
+            }
+        });
+
+        const safetyDiv = document.createElement('div');
+        safetyDiv.className = 'safety';
+        safetyDiv.innerHTML = `
+            <h3>Safety Measures:</h3>
+            <ul>
+                <li>Always consult with your healthcare provider before starting or modifying your exercise routine.</li>
+                <li>Stay well-hydrated and avoid overheating during exercise.</li>
+                <li>Stop immediately if you experience any pain, dizziness, shortness of breath, or unusual symptoms.</li>
+                <li>After the first trimester, avoid exercises that require lying flat on your back for extended periods.</li>
+                <li>Listen to your body and modify exercises as your pregnancy progresses.</li>
+                <li>Wear comfortable, supportive clothing and proper footwear.</li>
+                <li>Avoid contact sports or activities with a high risk of falling.</li>
+            </ul>
+        `;
+        resultDiv.appendChild(safetyDiv);
+    }
+</script>
+</body>
+</html>
